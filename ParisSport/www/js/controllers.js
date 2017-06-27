@@ -1,5 +1,5 @@
 angular.module('starter.controllers', [])
-.controller('AppCtrl', function($scope, $http, $localStorage, $state, $ionicHistory, $ionicSideMenuDelegate){
+.controller('AppCtrl', function($scope, $http, $localStorage, $state, $ionicHistory, $ionicSideMenuDelegate,$translate){
 	if(rtl_language) $scope.menuDirection = "right";
 	else $scope.menuDirection = "left";
 	$localStorage.category = [];
@@ -70,7 +70,7 @@ angular.module('starter.controllers', [])
 		}
 	);
 })
-.controller('LastestCtrl', function($scope, $http){
+.controller('LastestCtrl', function($scope, $http ,$translate){
 	$scope.latest = [];
 	$scope.page = 1;
 	$scope.load = function(isRefreshing){
@@ -103,7 +103,7 @@ angular.module('starter.controllers', [])
 		$scope.load(true);
 	};
 })
-.controller('TopnewsCtrl', function($scope, $http){
+.controller('TopnewsCtrl', function($scope, $http,$translate){
 	$scope.topnews = [];
 	$scope.page = 1;
 	$scope.load = function(isRefreshing){
@@ -136,7 +136,7 @@ angular.module('starter.controllers', [])
 		$scope.load(true);
 	};
 })
-.controller('VideoCtrl', function($scope, $http){
+.controller('VideoCtrl', function($scope, $http,$translate){
 	$scope.videos = [];
 	$scope.page = 1;
 	$scope.load = function(isRefreshing){
@@ -169,7 +169,7 @@ angular.module('starter.controllers', [])
 		$scope.load(true);
 	};
 })
-.controller('TrendingCtrl', function($scope, $http, $ionicScrollDelegate){
+.controller('TrendingCtrl', function($scope, $http, $ionicScrollDelegate,$translate){
 	$scope.trending = [];
 	$scope.page = 1;
 	$scope.load = function(isRefreshing){
@@ -202,14 +202,16 @@ angular.module('starter.controllers', [])
 		$scope.load(true);
 	};
 })
-.controller('DetailCtrl', function($scope, $http, $sce, $state, $stateParams, $ionicPopover, $localStorage, $ionicPopup, IonicClosePopupService, $ionicHistory){
+.controller('DetailCtrl', function($scope, $http, $sce, $state, $stateParams, $ionicPopover, $localStorage, $ionicPopup, IonicClosePopupService, $ionicHistory,$translate){
 	if(angular.isUndefined($localStorage.bookmark)) $localStorage.bookmark = {};
 	$scope.$sce = $sce;
 	$scope.posts = Number($stateParams.id);
 	$scope.incategory = [];
 	$scope.page = 1;
+	var msg = "";
 	if(angular.isDefined($localStorage.bookmark[$scope.posts])) $scope.bookmarked = true;
-	$scope.showLoading("Loading...");
+	  msg =  $translate.instant('loading'); 
+	 $scope.showLoading(msg);
 	$scope.$on('$stateChangeStart', function(event, toState, toParams){
 		var iframe = document.querySelectorAll('iframe');
 		for(var i=0; i < iframe.length; i++){
@@ -316,15 +318,17 @@ angular.module('starter.controllers', [])
 		if($scope.bookmarked){
 			delete $localStorage.bookmark[$scope.posts];
 			$scope.bookmarked = false;
-			window.plugins.toast.showShortBottom('Remove from Bookmark');
+			 msg =  $translate.instant('removeBookmark'); 
+			window.plugins.toast.showShortBottom(msg);
 		} else {
 			$localStorage.bookmark[$scope.posts] = true;
 			$scope.bookmarked = true;
-			window.plugins.toast.showShortBottom('Bookmark success');
+			 msg =  $translate.instant('bookmarkSuccess');  
+			window.plugins.toast.showShortBottom(msg);
 		}
 	};
 })
-.controller('PhotoCtrl', function($scope, $http, $ionicScrollDelegate){
+.controller('PhotoCtrl', function($scope, $http, $ionicScrollDelegate,$translate){
 	$scope.photos = [];
 	$scope.page = 1;
 	$scope.load = function(isRefreshing){
@@ -357,11 +361,13 @@ angular.module('starter.controllers', [])
 		$scope.load(true);
 	};
 })
-.controller('PhotoDetail', function($scope, $state, $http, $sce, $stateParams, $localStorage, $ionicSlideBoxDelegate, $ionicHistory){
+.controller('PhotoDetail', function($scope, $state, $http, $sce, $stateParams, $localStorage, $ionicSlideBoxDelegate, $ionicHistory,$translate){
 	if(angular.isUndefined($localStorage.bookmark)) $localStorage.bookmark = {};
 	$scope.$sce = $sce;
 	$scope.posts = $stateParams.id;
-	$scope.showLoading("Loading...");
+	var msg = "";
+	 msg =  $translate.instant('loading'); 
+	$scope.showLoading(msg);
 	if(angular.isDefined($localStorage.bookmark[$scope.posts])) $scope.bookmarked = true;
 	$http.get(wordpress_url+'/wp-json/wp/v2/posts/'+$scope.posts)
 	.then(function(response){
@@ -409,19 +415,22 @@ angular.module('starter.controllers', [])
 		if($scope.bookmarked){
 			delete $localStorage.bookmark[$scope.posts];
 			$scope.bookmarked = false;
-			window.plugins.toast.showShortBottom('Remove from Bookmark');
+			 msg =  $translate.instant('removeBookmark'); 
+			window.plugins.toast.showShortBottom(msg);
 		} else {
 			$localStorage.bookmark[$scope.posts] = true;
 			$scope.bookmarked = true;
-			window.plugins.toast.showShortBottom('Bookmark success');
+		    msg =  $translate.instant('bookmarkSuccess');  
+			window.plugins.toast.showShortBottom(msg);
 		}
 	};
 })
-.controller('CommentCtrl', function($scope, $http, $state, $sce, $stateParams, $localStorage, $ionicScrollDelegate){
+.controller('CommentCtrl', function($scope, $http, $state, $sce, $stateParams, $localStorage, $ionicScrollDelegate,$translate){
 	$scope.comments = [];
 	$scope.page = 1;
 	$scope.$sce = $sce;
 	$scope.posts = $stateParams.id;
+    var msg = "";
 	$scope.load = function(){
 		$http.get(wordpress_url+'/wp-json/wp/v2/comments?post='+$scope.posts ,{
 			params:{"orderBy":"date","order":"desc","page":$scope.page,"per_page":10}
@@ -438,10 +447,11 @@ angular.module('starter.controllers', [])
 			$scope.page = $scope.page +1;
 		});
 	};
-	$scope.data = {};
+	$scope.data = {}; 
 	$scope.AddAComment = function(){
 		if(angular.isDefined($localStorage.login)){
-			$scope.showLoading("Loading...");
+			 msg =  $translate.instant('loading');
+		    $scope.showLoading(msg);
 			$scope.checkToken().then(function(response){
 				$http({
 					method: 'POST',
@@ -463,7 +473,8 @@ angular.module('starter.controllers', [])
 				}).error(function(response){
 					$scope.hideLoading();
 					if(response == null){
-						window.plugins.toast.showShortBottom('This message already sent');
+						 msg =  $translate.instant('msgSent');
+						window.plugins.toast.showShortBottom(msg);
 					} else {
 						window.plugins.toast.showShortBottom(response.message);
 					}
@@ -475,7 +486,7 @@ angular.module('starter.controllers', [])
 		} else $state.go('app.login');
 	};
 })
-.controller('CategoryCtrl', function($scope, $http, $sce, $stateParams, $ionicScrollDelegate){
+.controller('CategoryCtrl', function($scope, $http, $sce, $stateParams, $ionicScrollDelegate,$translate){
 	$scope.$sce = $sce;
 	$scope.category = [];
 	$scope.page = 1;
@@ -504,18 +515,19 @@ angular.module('starter.controllers', [])
 		$scope.refreshing = true;
 		$scope.load(true);
 	};
-	$scope.showLoading("Loading...");
+    var msg =  $translate.instant('loading');
+	 $scope.showLoading(msg);
 	$http.get(wordpress_url+'/wp-json/wp/v2/categories/'+$stateParams.id)
 	.then(function(response){
 		$scope.nameCategory = response.data;
 		$scope.hideLoading();
 	});
 })
-.controller('SettingsCtrl', function($scope, $state, $http, $ionicPopup, $localStorage, IonicClosePopupService, Camera){
+.controller('SettingsCtrl', function($scope, $state, $http, $ionicPopup, $localStorage, IonicClosePopupService, Camera,$translate){
 	$scope.login = $localStorage.login;
 	if($scope.login) {
 		$http.post(wordpress_url+'/wp-json/mobiconnector/user/get_info',{
-			username: $scope.login.user_nicename
+			email: $scope.login.user_nicename
 		},{
 			cache: false,
 			headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8', 'Authorization': 'Bearer '+$scope.login.token},
@@ -589,7 +601,8 @@ angular.module('starter.controllers', [])
 		};
 		Camera.getPicture(options).then(function(imageData) {
 			$scope.avatar = "data:image/jpeg;base64,"+imageData;
-			$scope.showLoading("Loading...");
+			 var msg =  $translate.instant('loading');
+		    $scope.showLoading(msg);
 			$scope.checkToken().then(function(response){
 				$http.post(wordpress_url+'/wp-json/mobiconnector/user/update_profile',{
 					user_profile_picture: $scope.avatar
@@ -619,12 +632,15 @@ angular.module('starter.controllers', [])
 		});
 	};
 	$scope.showLogout = function() {
-	   var confirmPopup = $ionicPopup.show({
-		 title: 'Do you want to Logout?',
+		var title =    $translate.instant('logoutMsg');
+		var yesButton =    $translate.instant('yes');
+		var noButton =    $translate.instant('no'); 
+	    var confirmPopup = $ionicPopup.show({
+		 title: title,
 		 cssClass: 'popup-confirm',
 		 buttons:[
 			{
-				text:'YES',
+				text:yesButton,
 				type:'bar-button',
 				onTap: function(e){
 					delete $localStorage.login;
@@ -632,7 +648,7 @@ angular.module('starter.controllers', [])
 				}
 			},
 			{
-				text:'NO',
+				text:noButton,
 				type:'bar-button'
 			}
 		]
@@ -649,11 +665,14 @@ angular.module('starter.controllers', [])
 		else window.plugins.socialsharing.share(null,null,null,"https://itunes.apple.com/app/id"+apple_id+"?mt=8");
 	};
 })
-.controller('BookmarkCtrl', function($scope, $http, $localStorage, $sce, $stateParams, $ionicTabsDelegate){
+.controller('BookmarkCtrl', function($scope, $http, $localStorage, $sce, $stateParams, $ionicTabsDelegate,$translate){
+    var msg = "";
 	if($stateParams.type == "photo") setTimeout(function(){ $ionicTabsDelegate.select(1); },10);
 	$scope.$sce = $sce;
+	
 	if($localStorage.bookmark && angular.isObject($localStorage.bookmark)){
-		$scope.showLoading("Loading...");
+	    msg =  $translate.instant('loading');
+		$scope.showLoading(msg);
 		$scope.include = [];
 		angular.forEach($localStorage.bookmark, function(value, key){
 			$scope.include.push(key);
@@ -678,11 +697,13 @@ angular.module('starter.controllers', [])
 		};
 	}
 })
-.controller('LoginCtrl', function($scope, $state, $http, $localStorage, $ionicHistory, base64, $stateParams){
+.controller('LoginCtrl', function($scope, $state, $http, $localStorage, $ionicHistory, base64, $stateParams,$translate){
 	$scope.dataLogin = $stateParams;
 	$scope.data = {};
+	var msg = "";
 	$scope.login = function(){
-		$scope.showLoading("Loading...");
+	    msg =  $translate.instant('loading');
+		$scope.showLoading(msg);
 		$http.post(wordpress_url+'/wp-json/jwt-auth/v1/token', {
 			username: $scope.data.username,
 			password: $scope.data.password
@@ -707,7 +728,8 @@ angular.module('starter.controllers', [])
 			$ionicHistory.goBack();
 		}).catch(function(error){
 			$scope.hideLoading();
-			window.plugins.toast.showShortBottom("Invalid credentials");
+			 msg =  $translate.instant('invalidCredentials');
+			window.plugins.toast.showShortBottom(msg);
 		});
 	};
 	if($scope.dataLogin.username && $scope.dataLogin.password){
@@ -716,12 +738,14 @@ angular.module('starter.controllers', [])
 	}
 	else if(angular.isDefined($localStorage.login)) $ionicHistory.goBack();
 })
-.controller('ForgotCtrl', function($scope, $http, $state){
+.controller('ForgotCtrl', function($scope, $http, $state,$translate){
 	$scope.data = {};
+	var msg = "";
 	$scope.reset = function(){
-		$scope.showLoading("Loading...");
+		msg =  $translate.instant('loading');
+		$scope.showLoading(msg);
 		$http.post(wordpress_url+'/wp-json/mobiconnector/user/forgot_password',{
-			username: $scope.data.email,
+			email: $scope.data.email,
 		},{
 			cache: false,
 			headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
@@ -735,39 +759,50 @@ angular.module('starter.controllers', [])
 		}).then(function(response){
 			$scope.hideLoading();
 			$state.go('app.login');
-			window.plugins.toast.showShortBottom("Please check your mail for reset link");
+		    msg =  $translate.instant('resetpwlink');
+			window.plugins.toast.showShortBottom(msg);
 		}).catch(function(error){
 			$scope.hideLoading();
 			window.plugins.toast.showShortBottom(error.data.message);
 		});
 	};
 })
-.controller('SignupCtrl', function($scope, $http, $state){
+.controller('SignupCtrl', function($scope, $http, $state,$translate){
 	$scope.data = {};
+	var msg = ""; 					
+
 	$scope.register = function(){
 		if(!$scope.data.username){
-			window.plugins.toast.showShortBottom('Username is not inserted');
+			msg =  $translate.instant('userNameRequired');
+			window.plugins.toast.showShortBottom(msg);
 		}
 		if(!$scope.data.email){
-			window.plugins.toast.showShortBottom('Email is not inserted');
+			msg =  $translate.instant('emailRequired');
+			window.plugins.toast.showShortBottom(msg);
 		}
 		else if(!$scope.data.password){
-			window.plugins.toast.showShortBottom('Password is not inserted');
+			msg =  $translate.instant('passwordRequired');
+			window.plugins.toast.showShortBottom(msg);
 		}
 		else if(!$scope.data.repass){
-			window.plugins.toast.showShortBottom('Re-password is not inserted');
+			msg =  $translate.instant('passwordRequired');
+			window.plugins.toast.showShortBottom(msg);
 		}
 		else if(!$scope.data.name.first || !$scope.data.name.last){
-			window.plugins.toast.showShortBottom('Name is not inserted');
+			msg =  $translate.instant('nameRequired');
+			window.plugins.toast.showShortBottom(msg);
 		}
 		else if(!$scope.data.term){
-			window.plugins.toast.showShortBottom('Please accept terms and conditions');
+			msg =  $translate.instant('conditionRequired');
+			window.plugins.toast.showShortBottom(msg);
 		}
 		else {
 			if($scope.data.password != $scope.data.repass){
-				window.plugins.toast.showShortBottom('Re-password do not match');
+				msg =  $translate.instant('pwnotmatchRequired');
+				window.plugins.toast.showShortBottom(msg);
 			} else {
-				$scope.showLoading("Loading...");
+				msg =  $translate.instant('loading');
+				$scope.showLoading(msg);
 				$http.post(wordpress_url+'/wp-json/mobiconnector/user/register',{
 					username: $scope.data.username,
 					email: $scope.data.email,
@@ -787,7 +822,8 @@ angular.module('starter.controllers', [])
 				}).then(function(response){
 					$scope.hideLoading();
 					$state.go('app.login');
-					window.plugins.toast.showShortBottom("A verification mail has been send to the email address provided by you. Please validate.");
+					 msg =  $translate.instant('emailValidation');
+					window.plugins.toast.showShortBottom(msg);
 				}).catch(function(error){
 					$scope.hideLoading();
 					window.plugins.toast.showShortBottom(error.data.message);
@@ -796,7 +832,7 @@ angular.module('starter.controllers', [])
 		}
 	};
 })
-.controller('SearchCtrl', function($scope, $http, $ionicScrollDelegate){
+.controller('SearchCtrl', function($scope, $http, $ionicScrollDelegate,$translate){
 	$scope.data = {};
 	$scope.load = function(){
 		$http.get(wordpress_url+'/wp-json/wp/v2/posts?search='+$scope.data.keyword,{

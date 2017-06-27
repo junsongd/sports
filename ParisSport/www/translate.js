@@ -69,13 +69,32 @@ angular.module('starter.translate', ['pascalprecht.translate'])
 		keyword: "Keyword",
 		emptyList: "Empty list",
 		noResult: "No results avalible",
-		pull: "Pull to refresh..."
+		pull: "Pull to refresh...",
+		emailValidation : "A verification mail has been send to the email address provided by you. Please validate.",
+		userNameRequired : "Username is not inserted",
+		emailRequired: "Email is not inserted",
+		passwordRequired:"Password is not inserted",
+		repasswordRequired :"Re-password is not inserted",
+		nameRequired : "Name is not inserted",
+	    conditionRequired : "Please accept terms and conditions",
+	    pwnotmatchRequired : "Re-password do not match",
+		loading : "Loading...",
+		resetpwlink : "Please check your mail for reset link",
+	    invalidCredentials : "Invalid credentials",
+		logoutMsg : "Do you want to Logout?",
+		yes : "Yes",
+		no : "No",
+		msgSent : "This message already sent",
+	    removeBookmark : "Remove from Bookmark",
+	    bookmarkSuccess : "Bookmark success"
+
+		
 	});
 	//End Translate for EN
 
 		//Translate for CN
 	$translateProvider.translations('cn', {
-		title: "Paris 健身达人",
+		title: "LoveFit",
 		Home: "首页",
 		fontSize: "字体大小",
 		Bookmark: "收藏",
@@ -137,7 +156,28 @@ angular.module('starter.translate', ['pascalprecht.translate'])
 		keyword: "关键字",
 		emptyList: "空列表",
 		noResult: "无结果",
-		pull: "拉动刷新"
+		pull: "拉动刷新",
+		emailValidation:"验证邮件已经发送至邮箱و请查收",
+		userNameRequired : "请输入用户名",
+		emailRequired: "请输入邮箱",
+		passwordRequired:"密码不能为空",
+		repasswordRequired :"确认密码不能为空",
+		nameRequired : "请输入名字",
+        conditionRequired : "请同意条款",
+		pwnotmatchRequired : "确认密码不匹配",
+		loading : "加载中...",
+		resetpwlink : "请检查邮箱重置密码",
+		invalidCredentials : "用户名或密码错误",
+		logoutMsg : "确定要退出?",
+		yes : "是",
+		no : "否",
+		msgSent : "信息已发送",
+		removeBookmark : "删除收藏",
+		bookmarkSuccess : "收藏成功"
+	 
+		 
+		 
+	 
 	});
 	//End Translate for CN
 });
