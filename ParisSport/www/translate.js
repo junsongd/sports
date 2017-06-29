@@ -133,7 +133,7 @@ angular.module('starter.translate', ['pascalprecht.translate'])
 		privacyPolicy: "隐私条款",
 		version: "版本",
 		versionNumber: "1.0.0",
-		news: "新闻",
+		news: "文章",
 		photo: "图片",
 		bookmark: "收藏",
 		noBookmark: "无收藏",

@@ -1,5 +1,5 @@
 //For rate and share app
-var android_packageName = "com.taydo.dailynews";
+var android_packageName = "fr.junsong.parissports";
 var apple_id = "1166773798";
 //URL site wordpress
 var wordpress_url = "http://sports.dongjunsong.com";
@@ -15,4 +15,5 @@ var open_target_blank = true;
 //Date time format
 var date_format = "dd-MM-yyyy";
 //For Google Analytics
-var google_analytics = "UA-85795435-1";
+var google_analytics = "UA-101864539-1";
+ 
