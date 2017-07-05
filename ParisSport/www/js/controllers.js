@@ -470,6 +470,8 @@ angular.module('starter.controllers', [])
 					$state.reload();
 					$scope.hideLoading();
 					delete $scope.data.content;
+					msg = $translate.instant('commentSuccess');
+					window.plugins.toast.showShortBottom(msg);
 				}).error(function(response){
 					$scope.hideLoading();
 					if(response == null){
@@ -489,13 +491,17 @@ angular.module('starter.controllers', [])
 .controller('CategoryCtrl', function($scope, $http, $sce, $stateParams, $ionicScrollDelegate,$translate){
 	$scope.$sce = $sce;
 	$scope.category = [];
-	$scope.page = 1;
-	$scope.load = function(){
+	$scope.page = 1; 
+	$scope.load = function(isRefreshing){
 		$http.get(wordpress_url+'/wp-json/wp/v2/posts?categories='+$stateParams.id, {
 			params:{"page":$scope.page,"per_page":wordpress_per_page}
 		}).then(function(response){
+            if(isRefreshing) {
+				$scope.category = [];
+				$scope.over = false;
+			}
 			$scope.refreshing = false;
-			if(response.data.length == 0) {
+ 			if(response.data.length == 0) {
 				$scope.page = $scope.page -1;
 				$scope.over = true;
 			}
