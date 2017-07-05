@@ -86,10 +86,11 @@ angular.module('starter.translate', ['pascalprecht.translate'])
 		no : "No",
 		msgSent : "This message already sent",
 	    removeBookmark : "Remove from Bookmark",
-	    bookmarkSuccess : "Bookmark success"
+	    bookmarkSuccess : "Bookmark success",
+	    commentSuccess : "评论添加成功,管理员审核通过后可见"
 
 		
-	});
+	}); 
 	//End Translate for EN
 
 		//Translate for CN
@@ -173,7 +174,8 @@ angular.module('starter.translate', ['pascalprecht.translate'])
 		no : "否",
 		msgSent : "信息已发送",
 		removeBookmark : "删除收藏",
-		bookmarkSuccess : "收藏成功"
+		bookmarkSuccess : "收藏成功",
+		commentSuccess : "评论添加成功,管理员审核通过后可见"
 	 
 		 
 		 
