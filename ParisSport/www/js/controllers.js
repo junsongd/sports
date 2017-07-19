@@ -280,10 +280,10 @@ angular.module('starter.controllers', [])
 		}
 	};
 	$scope.share = function(){
-	    var url = null;
+	    var imageurl = "http://sports.dongjunsong.com/wp-content/uploads/2017/07/ipad-app-76pt@1x.png";
 		if($scope.data.mobiconnector_feature_image && $scope.data.mobiconnector_feature_image.mobiconnector_small)
-		  url =  $scope.data.mobiconnector_feature_image.mobiconnector_small;
-		window.plugins.socialsharing.share(null,null,url,$scope.data.link);
+		  imageurl =  $scope.data.mobiconnector_feature_image.mobiconnector_small;
+		window.plugins.socialsharing.share("网站地址:http://sports.dongjunsong.com/","分享于LoveFit",imageurl,$scope.data.link);
 	};
 	$ionicPopover.fromTemplateUrl('templates/dailynews/menu.html', {
 		scope: $scope
