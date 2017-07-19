@@ -280,7 +280,10 @@ angular.module('starter.controllers', [])
 		}
 	};
 	$scope.share = function(){
-		window.plugins.socialsharing.share(null,null,null,$scope.data.link);
+	    var url = null;
+		if($scope.data.mobiconnector_feature_image && $scope.data.mobiconnector_feature_image.mobiconnector_small)
+		  url =  $scope.data.mobiconnector_feature_image.mobiconnector_small;
+		window.plugins.socialsharing.share(null,null,url,$scope.data.link);
 	};
 	$ionicPopover.fromTemplateUrl('templates/dailynews/menu.html', {
 		scope: $scope
@@ -386,10 +389,11 @@ angular.module('starter.controllers', [])
 		}
 		$scope.hideLoading();
 		$ionicSlideBoxDelegate.update();
-		$scope.share = function(){
-			window.plugins.socialsharing.share(null, null, $scope.data.mobiconnector_feature_image.source_url, null);
-		};
+		
 	});
+	$scope.share = function(){
+			window.plugins.socialsharing.share(null, null, $scope.data.mobiconnector_feature_image.source_url, null);
+	 };
 	$scope.onRelease = function(e, index){
 		if(index != 0 && index != $scope.list.length-1) return;
 		switch(e.gesture.direction){
@@ -492,7 +496,7 @@ angular.module('starter.controllers', [])
 	$scope.$sce = $sce;
 	$scope.category = [];
 	$scope.page = 1; 
-	$scope.load = function(isRefreshing){
+	$scope.load = function(isRefreshing){ 
 		$http.get(wordpress_url+'/wp-json/wp/v2/posts?categories='+$stateParams.id, {
 			params:{"page":$scope.page,"per_page":wordpress_per_page}
 		}).then(function(response){
@@ -670,6 +674,17 @@ angular.module('starter.controllers', [])
 		window.plugins.socialsharing.share(null,null,null,"https://play.google.com/store/apps/details?id="+android_packageName);
 		else window.plugins.socialsharing.share(null,null,null,"https://itunes.apple.com/app/id"+apple_id+"?mt=8");
 	};
+	var subject =  $translate.instant('subjectEmail'); 
+    $scope.sendMail = function(){
+		  if(cordova.plugins){ 
+	         cordova.plugins.email.open({
+				to:      'lovefit.help@hotmail.com', 
+				subject: subject,
+				body:    ''
+			}); 
+		  } 
+	}; 
+
 })
 .controller('BookmarkCtrl', function($scope, $http, $localStorage, $sce, $stateParams, $ionicTabsDelegate,$translate){
     var msg = "";
